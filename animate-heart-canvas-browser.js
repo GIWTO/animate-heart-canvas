@@ -17,8 +17,9 @@ class AnimateHeartCanvas {
      * @param sizeMin 心形最小值
      * @param sizeMax 心形最大值
      * @param bgColor 背景颜色
+     * @param loverName 自定义中文字符
      */
-    constructor(hMin, hMax, countHeart = 150, sizeMin = 50, sizeMax = 350, bgColor) {
+    constructor(hMin, hMax, countHeart = 150, sizeMin = 100, sizeMax = 400, bgColor, loverName) {
         this.isPlaying = true // 默认自动播放
 
         this.mouseX = 0
@@ -37,13 +38,13 @@ class AnimateHeartCanvas {
 
             x: 50,                         // 位置 x
             y: 50,                         // 位置 y
-            width: 200,                    // heart 大小
-            height: 200,                   // heart 大小
+            width: 400,                    // heart 大小
+            height: 400,                   // heart 大小
             countHeart: countHeart || 150, // heart 数量
 
             // 大小
-            sizeMin: sizeMin || 50,        // 最小值
-            sizeMax: sizeMax || 350,       // 最大值
+            sizeMin: sizeMin || 100,        // 最小值
+            sizeMax: sizeMax || 400,       // 最大值
 
             // 颜色
             colorSaturate: 100,            // 颜色饱和度 0-100
@@ -64,6 +65,7 @@ class AnimateHeartCanvas {
 
             flowDirection: 1,              // 运动方向 1 向上 -1 向下
 
+            nameArr: loverName.split("")
 
         }
 
@@ -149,7 +151,8 @@ class AnimateHeartCanvas {
                 originalY: y,
                 width: randomSize,  // heart 大小
                 height: randomSize, // heart 大小
-                colorH: randomInt(this.configHeart.hMin, this.configHeart.hMax)
+                colorH: randomInt(this.configHeart.hMin, this.configHeart.hMax),
+                loverName: this.configHeart.nameArr[Math.floor(Math.random() * this.configHeart.nameArr.length)]
             })
         }
 
@@ -218,7 +221,8 @@ class AnimateHeartCanvas {
                 heart.y,
                 heart.width / 2,
                 heart.height / 2,
-                `hsl(${heart.colorH} ${this.configHeart.colorSaturate}% ${this.configHeart.colorLight}% / ${heart.opacity}%)`
+                `hsl(${heart.colorH} ${this.configHeart.colorSaturate}% ${this.configHeart.colorLight}% / ${heart.opacity}%)`,
+                heart.loverName
             )
             heart.opacity = heart.opacity + this.configHeart.opacityGrowth
 
@@ -232,7 +236,7 @@ class AnimateHeartCanvas {
     }
 
     // 画一个心
-    drawHeart(x, y, width, height, colorFill) {
+    drawHeart(x, y, width, height, colorFill, text) {
 
         let canvasHeart = document.getElementById('heartLayer')
         let contextHeart = canvasHeart.getContext('2d')
@@ -268,6 +272,24 @@ class AnimateHeartCanvas {
         contextHeart.closePath()
         contextHeart.fillStyle = colorFill
         contextHeart.fill()
+
+        // 在心形中央添加文本
+        // 设置字体大小
+        let fontSize = width / 2
+        contextHeart.font = "bold " + fontSize + "px 'Brush Script'"
+        // 更改字号后，必须重置对齐方式，否则居中麻烦。设置文本的垂直对齐方式
+        contextHeart.textAlign = "center"
+        contextHeart.textBaseline = 'middle'
+        // 文字颜色
+        //创建渐变
+        // let gradient = contextHeart.createLinearGradient(0,0,canvasHeart.width,0);
+        // gradient.addColorStop("0","red");
+        // gradient.addColorStop("1","pink");
+        //填充渐变
+        contextHeart.fillStyle = colorFill;
+        // contextHeart.fillStyle = "#040404"
+        contextHeart.fillText(text, x, y + height / 2)
+
         contextHeart.restore()
     }
 
