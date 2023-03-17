@@ -24,8 +24,9 @@
  * @param sizeMin 心形最小值
  * @param sizeMax 心形最大值
  * @param bgColor 背景颜色
+ * @param loverName 自定义中文字符
  */
-let animateHeartCanvas = new AnimateHeartCanvas(hMin, hMax, countHeart, sizeMin, sizeMax, bgColor)
+let animateHeartCanvas = new AnimateHeartCanvas(hMin, hMax, countHeart, sizeMin, sizeMax, bgColor,loverName)
 // hMin hMax 对应 hue 的颜色值
 // 什么参数都不写就是红色
 
